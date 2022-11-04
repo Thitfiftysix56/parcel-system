@@ -108,6 +108,17 @@ app.post('/login', jsonParser , (req, res)=> {
 //     }
 // })
 
+app.get('/PageManage' , (req, res)=> {
+    con.query("SELECT tbuser.IdUser as id , Rank , Name , LastName , Email , Password , Division , Position , Department ,Approv , Status FROM tbuser", (err,result) => {
+        if(err){
+            console.log(err);
+        }else{
+            res.send(result);
+
+        }
+    })
+})
+
 
 const listener = app.listen(process.env.PORT || 8080, () => {
     console.log('App is listening on port ' + listener.address().port)

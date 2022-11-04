@@ -6,13 +6,16 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 
-function SelectStatus() {
-    const [Status, setStatus] = React.useState(10);
+function SelectStatus(props) {
+  const {StatusS} = props;
+
+    
+    const [Status, setStatus] = React.useState(StatusS);
 
     const handleChange = (event) => {
         setStatus(event.target.value);
     };
-
+    console.log(Status)
   return (
     <div>
  <Box sx={{ minWidth: 120,margin:'10px' }}>
@@ -24,9 +27,9 @@ function SelectStatus() {
           onChange={handleChange}
          
         >
-          <MenuItem value={10}>รอการอนุมัติ</MenuItem>
-          <MenuItem value={20}>Admin</MenuItem>
-          <MenuItem value={30}>สมาชิก</MenuItem>
+          <MenuItem value={"รออนุมัติ"}>รออนุมัติ</MenuItem>
+          <MenuItem value={"Admin"}>Admin</MenuItem>
+          <MenuItem value={"สมาชิก"}>สมาชิก</MenuItem>
         </Select>
       </FormControl>
     </Box>

@@ -79,8 +79,14 @@ const ButtonEdit = styled(Button)(({ theme }) => ({
   });
 
 
-function EditManage() {
+function EditManage(props) {
+
+  const {dataUser} = props;
+  
+
   const [rank, setRank] = React.useState('');
+  const [DataUser, setDataUser] = React.useState(dataUser);
+  console.log(DataUser)
 
   const handleChange = (event) => {
     setRank(event.target.value);
@@ -122,20 +128,20 @@ function EditManage() {
      
     <Box sx={{ minWidth: 600 ,display: "flex"}}>
     <Box sx={{padding:'10px', width: "50%",}}>
-      <CssTextField fullWidth label="ชื่อ" id="fullWidth" />
+      <CssTextField fullWidth label="ชื่อ" id="fullWidth" value={DataUser.row.Name} />
       </Box>
       <Box sx={{padding:'10px', width: "50%",}}>
-      <CssTextField fullWidth label="นามสกุล" id="fullWidth" />
+      <CssTextField fullWidth label="นามสกุล" id="fullWidth" value={DataUser.row.LastName} />
       </Box>
     </Box>
     <Box sx={{ minWidth: 600 ,display: "flex"}}>
     <Box sx={{padding:'10px', width: "100%",}}>
-      <CssTextField fullWidth label="RTAF-Email" id="fullWidth" placeholder='(ใส่ @ rtaf.mi.th)' />
+      <CssTextField fullWidth label="RTAF-Email" id="fullWidth" placeholder='(ใส่ @ rtaf.mi.th)' value={DataUser.row.Email} />
       </Box>
     </Box>
     <Box sx={{ minWidth: 600 ,display: "flex"}}>
     <Box sx={{padding:'10px', width: "100%",}}>
-      <CssTextField fullWidth label="กอง" id="fullWidth"  />
+      <CssTextField fullWidth label="กอง" id="fullWidth" value={DataUser.row.Division} />
       </Box>
     </Box>
     <Box sx={{ minWidth: 600 ,display: "flex"}}>
@@ -145,17 +151,17 @@ function EditManage() {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={rank}
+          value={DataUser.row.Position}
           label="แผนก"
           onChange={handleChange}
         >
-          <MenuItem value={10}>แผนกมาตรฐานซอฟต์แวร์</MenuItem>
-          <MenuItem value={20}>แผนกวิเคราะห์และออกแบบซอฟต์แวร์</MenuItem>
+          <MenuItem value={"แผนกมาตรฐานซอฟต์แวร์"}>แผนกมาตรฐานซอฟต์แวร์</MenuItem>
+          <MenuItem value={"แผนกวิเคราะห์และออกแบบซอฟต์แวร์"}>แผนกวิเคราะห์และออกแบบซอฟต์แวร์</MenuItem>
         </Select>
       </CssIFormControl>
       </Box>
       <Box sx={{padding:'10px', width: "50%",}}>
-      <CssTextField fullWidth label="สังกัด" id="fullWidth" />
+      <CssTextField fullWidth label="สังกัด" id="fullWidth"  value={DataUser.row.Department}/>
       </Box>
     </Box>
 </Box>

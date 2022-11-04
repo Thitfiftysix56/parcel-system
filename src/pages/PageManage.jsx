@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { styled } from '@mui/material/styles';
@@ -13,52 +13,71 @@ import { Link } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SelectStatus from '../components/SelectStatus'
 import EditManage from '../components/EditManage'
+import Axios from 'axios'
 
+
+
+function getFullName(params) {
+  return `${params.row.Rank || ''} ${params.row.Name || ''} ${params.row.LastName || ''}`
+}
 
 const columns = [
-  { field: 'id', headerName: 'ลำดับ', width: 90 },
+  { field: 'id',fontWeight: 'bold',headerAlign: 'center',headerName: 'ลำดับ', width: 90 , valueGetter: (params) => params.api.getRowIndex(params.row.id) + 1,align: 'center',},
   {
-    field: 'name',
+    field: 'Name',
+    headerAlign: 'center',
     headerName: 'ยศ-ชื่อ-นามสกุล',
     width: 150,
     editable: true,
+    align: 'center',
+    valueGetter: getFullName,
   },
   {
-    field: 'company',
+    field: 'Division',
+    headerAlign: 'center',
     headerName: 'กอง',
     width: 150,
     editable: true,
+    align: 'center',
   },
   {
-    field: 'position',
+    field: 'Position',
+    headerAlign: 'center',
     headerName: 'สังกัด',
-    width: 150,
+    width: 300,
     editable: true,
+    align: 'center',
   },
     {
-      field: 'status',
+      field: 'Status',
+      headerAlign: 'center',
       headerName: 'สถานะ',
       width: 150,
+      align: 'center',
       renderCell: (params) => (
         <>
-        <SelectStatus />
+        <SelectStatus StatusS={params.row.Status} />
         </>
       ),
     },
     {
-      field: 'email',
+      field: 'Email',
+      headerAlign: 'center',
       headerName: 'E-mail',
-      width: 150,
+      width: 200,
       editable: true,
+      align: 'center',
     },
     {
       field: 'management',
+      headerAlign: 'center',
       headerName: 'การจัดการ',
       width: 250,
+      align: 'center',
       renderCell: (params) => (
         <strong>
           <Box sx={{display: 'flex'}}>
-<EditManage />
+<EditManage dataUser={params} />
 
 <Link to="#" style={{ textDecoration: "none" }}>
 <ButtonDelete
@@ -78,10 +97,10 @@ const columns = [
     },
 ];
 
-const rows = [
-  { id: 1, name: 'จ.อ.อาทิตย์ แสนโคก', company: 'กมซ.',position:'ศซว.ทอ.',email:'arthit_sankok'},
+// const rows = [
+//   { id: 1, name: 'จ.อ.อาทิตย์ แสนโคก', company: 'กมซ.',position:'ศซว.ทอ.',email:'arthit_sankok'},
   
-];
+// ];
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -94,6 +113,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 
 function QuickSearchToolbar() {
+
+
   return (
     <Box
       sx={{
@@ -130,6 +151,20 @@ const ButtonDelete = styled(Button)(({ theme }) => ({
 
 
 function PageManage() {
+
+  const [dataUser,setDataUser] = useState([])
+
+  useEffect(() => {
+      Axios.get(`${process.env.REACT_APP_API_URL}/PageManage`)
+      .then((res) => {
+        setDataUser(res.data)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  },[])
+
+  console.log(dataUser)
   return (
     <div>
     <Box sx={{width: "100%",height: "100%"}}>
@@ -147,10 +182,11 @@ function PageManage() {
      <Container >
 
 
-     <Box sx={{ height: 400, width: 1 ,backgroundColor:'#ffffff'}}>
+     <Box sx={{ height: 400, width: '100%' ,backgroundColor:'#ffffff',}}>
 <DataGrid
-  rows={rows}
+  rows={dataUser}
  columns={columns}
+ 
  initialState={{
    filter: {
      filterModel: {
